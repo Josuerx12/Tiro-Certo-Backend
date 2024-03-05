@@ -6,9 +6,12 @@ function ErrorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log(err.message);
+  if (err) {
+    console.log(err.message);
 
-  res.status(501).json({ error: err.message });
+    res.status(501).json({ error: err.message });
+  }
+  next();
 }
 
 export { ErrorHandler };

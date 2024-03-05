@@ -5,7 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { DBConnect } from "../config/DB";
 import { routesRouter } from "./router";
-import { ErrorHandler } from "../middlewares/error-handler";
+import { ErrorHandler } from "../middlewares/ErrorHandler";
 
 export class Bootstrap {
   private app: express.Express;
