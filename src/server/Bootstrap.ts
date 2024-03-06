@@ -19,8 +19,8 @@ export class Bootstrap {
     this.app.use(cors());
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(ErrorHandler);
     this.app.use(routesRouter);
+    this.app.use(ErrorHandler);
   }
 
   start = async () => {

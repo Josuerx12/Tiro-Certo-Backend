@@ -1,13 +1,15 @@
 import { body } from "express-validator";
 import User from "../../../entities/User";
 
-const registerValidations = [
+const editUserValidations = [
   body("name")
+    .optional()
     .isString()
     .withMessage("Nome deve ser preenchido!")
     .isLength({ min: 3, max: 60 })
     .withMessage("Nome deve conter entre 3 a 60 caracteres!"),
   body("email")
+    .optional()
     .isEmail()
     .withMessage("E-mail valido é obrigatorio!")
     .custom(async (value: string) => {
@@ -18,6 +20,7 @@ const registerValidations = [
       return true;
     }),
   body("cpf")
+    .optional()
     .isString()
     .withMessage("CPF é obrigatório no cadastro!")
     .custom((value: string) => {
@@ -29,16 +32,28 @@ const registerValidations = [
       return true;
     }),
   body("password")
+    .optional()
     .isStrongPassword()
     .withMessage(
       "Senha deve conter 8 caracteres, sendo pelo menos 1 especial, 1 em caixa alta e 1 numero."
-    ),
-  body("confirmPassword").custom((value: string, { req }) => {
-    if (value !== req.body.password) {
-      throw new Error("As senhas não se conferem!");
-    }
-    return true;
-  }),
+    )
+    .custom((value: string, { req }) => {
+      if (value !== req.body.confirmPassword) {
+        throw new Error("As senhas não se conferem!");
+      }
+      return true;
+    }),
+  body("cr").optional().isString().withMessage("CR deve ser válido!"),
+  body("admin")
+    .optional()
+    .isBoolean()
+    .withMessage("Admin deve ser um valor booleano!"),
+  body("supervisor")
+    .optional()
+    .isBoolean()
+    .withMessage("Supervisor deve ser um valor booleano!"),
+  body("founder")
+    .optional()
+    .isBoolean()
+    .withMessage("Founder deve ser um valor booleano!"),
 ];
-
-export { registerValidations };

@@ -1,12 +1,13 @@
 import { Schema, model } from "mongoose";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 
 const User = new Schema(
   {
-    uid: { type: String, default: uuid() },
+    _id: { type: String, default: uuidv4() },
     name: String,
     email: String,
     cpf: Number,
+    cr: { type: Number, default: null },
     photo: { type: String, default: null },
     imageSignature: { type: String, default: null },
     fingerPrintSignature: { type: String, default: null },
