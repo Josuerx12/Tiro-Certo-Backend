@@ -1,4 +1,5 @@
 import multer from "multer";
+import path from "path";
 import { v4 } from "uuid";
 
 export interface multerFile {
@@ -11,11 +12,11 @@ export interface multerFile {
 }
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, "../images");
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "..", "images"));
   },
-  filename(req, file, cb) {
-    cb(null, v4());
+  filename: (req, file, cb) => {
+    cb(null, (file.fieldname = v4() + "." + file.mimetype.split("/")[1]));
   },
 });
 

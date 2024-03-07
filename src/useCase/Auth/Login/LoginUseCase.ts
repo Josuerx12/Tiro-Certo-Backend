@@ -13,9 +13,7 @@ export class LoginUseCase {
       throw new Error("Senha incorreta, corrija e tente novamente!");
     }
 
-    const token = sign(user._id, process.env.SECRET, {
-      expiresIn: "7d",
-    });
+    const token = sign(user._id, process.env.SECRET);
     return token;
   }
 }

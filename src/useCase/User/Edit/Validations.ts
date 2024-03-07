@@ -57,3 +57,5 @@ const editUserValidations = [
     .isBoolean()
     .withMessage("Founder deve ser um valor booleano!"),
 ];
+
+export { editUserValidations };

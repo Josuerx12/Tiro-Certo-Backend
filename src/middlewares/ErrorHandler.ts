@@ -7,7 +7,7 @@ function ErrorHandler(
   next: NextFunction
 ) {
   if (err) {
-    console.log(err.message);
+    console.log(err);
 
     res.status(501).json({ error: err.message });
   }
