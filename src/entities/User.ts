@@ -11,6 +11,7 @@ const User = new Schema(
     photo: { type: String, default: null },
     fingerPrintSignature: { type: String, default: null },
     password: String,
+    clubs: { type: [String], _id: false, default: [] },
     admin: { type: Boolean, default: false },
     supervisor: { type: Boolean, default: false },
     founder: { type: Boolean, default: false },

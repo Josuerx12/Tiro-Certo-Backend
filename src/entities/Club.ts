@@ -9,6 +9,8 @@ const Club = new Schema(
     lat: String,
     cr: String,
     cnpj: String,
+    logo: { type: String, default: null },
+    users: { type: [String], _id: false, default: [] },
   },
   { timestamps: true, _id: false }
 );
