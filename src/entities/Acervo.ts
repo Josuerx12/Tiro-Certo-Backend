@@ -8,12 +8,14 @@ const Acervo = new Schema(
     weapons: {
       type: [
         {
+          _id: { type: String, default: v4() },
           name: String,
-          tipo: String,
+          categoryId: String,
           modelo: String,
           registro: String,
           validade: String,
         },
+        { _id: false },
       ],
       default: [],
     },

@@ -7,6 +7,7 @@ import { EditUserUseCase } from "../../useCase/User/Edit/EditUserUseCase";
 import { EditUserController } from "../../useCase/User/Edit/EditUserController";
 import { GetUsersUseCase } from "../../useCase/User/GetAll/GetUsersUseCase";
 import { GetUsersController } from "../../useCase/User/GetAll/GetUsersController";
+import { GetUserController } from "../../useCase/User/Get/GetUserController";
 
 const userRoutes = Router();
 
@@ -18,6 +19,9 @@ const editController = new EditUserController(editUseCase);
 const getAllCase = new GetUsersUseCase();
 const getAllController = new GetUsersController(getAllCase);
 
+// GET ONE
+const getOneController = new GetUserController();
+
 userRoutes.put(
   "/:id",
   AuthGuard,
@@ -27,6 +31,7 @@ userRoutes.put(
   editController.handle
 );
 
-userRoutes.get("/", AuthGuard, getAllController.handle);
+userRoutes.get("/all", AuthGuard, getAllController.handle);
+userRoutes.get("/", AuthGuard, getOneController.handle);
 
 export { userRoutes };

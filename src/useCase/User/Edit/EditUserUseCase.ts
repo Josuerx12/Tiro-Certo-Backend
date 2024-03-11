@@ -1,39 +1,32 @@
 import User from "../../../entities/User";
 import { IUser } from "../UserInterface";
 import { multerFile } from "../../../config/Upload";
-import { unlink } from "fs";
-import path from "path";
+import { auth, deleteToDrive, uploadDrive } from "../../../config/GDrive";
+import { v4 } from "uuid";
 
 export class EditUserUseCase {
   async execute(id: string, credentials: IUser, file?: multerFile) {
     const user = await User.findById(id);
     if (file) {
+      file.originalname = v4() + "." + file.mimetype.split("/")[1];
+
       const permitedFiles = ["image/jpeg", "image/jpg", "image/png"];
 
       if (!permitedFiles.includes(file.mimetype)) {
-        unlink(
-          path.join(__dirname, "..", "..", "..", "images/") + file.fieldname,
-          (err) => {
-            if (err) {
-              throw err;
-            }
-          }
-        );
         throw new Error("Imagens devem ser no formato: jpeg, jpg ou png!");
       }
 
       if (user.photo) {
-        unlink(
-          path.join(__dirname, "..", "..", "..", "images/") + user.photo,
-          (err) => {
-            if (err) {
-              throw err;
-            }
-          }
-        );
+        await auth().then((jwt) => deleteToDrive(jwt, user.photo));
       }
 
-      await user.updateOne({ ...credentials, photo: file.fieldname });
+      await auth().then(
+        async (jwt) =>
+          await uploadDrive(jwt, file).then(
+            async (data) =>
+              await user.updateOne({ ...credentials, photo: data.id })
+          )
+      );
     }
 
     await user.updateOne(credentials);
