@@ -27,6 +27,7 @@ export class EditUserUseCase {
               await user.updateOne({ ...credentials, photo: data.id })
           )
       );
+      return `Usuário: ${user.name}, editado com sucesso!`;
     }
 
     await user.updateOne(credentials);

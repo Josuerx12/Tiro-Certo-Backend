@@ -4,4 +4,5 @@ export interface ICreateClubDTO {
   lat: string;
   cr: string;
   cnpj: string;
+  users?: [string] | [];
 }

@@ -5,6 +5,14 @@ const ActivityRegister = new Schema(
   {
     _id: { type: String, default: v4() },
     ownerID: String,
+    club: {
+      type: {
+        _id: String,
+        name: String,
+        cnpj: String,
+        cr: String,
+      },
+    },
     name: String,
     cpf: String,
     cr: String,
@@ -12,7 +20,7 @@ const ActivityRegister = new Schema(
       type: [
         {
           name: String,
-          tipo: String,
+          categoria: String,
           modelo: String,
           registro: String,
           validade: String,
