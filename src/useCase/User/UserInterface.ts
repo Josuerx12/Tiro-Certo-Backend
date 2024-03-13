@@ -10,5 +10,6 @@ export interface IUser {
   password: string;
   admin: boolean;
   supervisor: boolean;
+  clubs: string[];
   founder: boolean;
 }

@@ -29,3 +29,5 @@ const EditWeaponsCategoryValidation = [
       return true;
     }),
 ];
+
+export { EditWeaponsCategoryValidation };
