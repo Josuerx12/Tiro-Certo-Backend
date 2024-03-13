@@ -7,6 +7,6 @@ export class GetUsersController {
   handle = async (req: Request, res: Response) => {
     const payload = await this.GetUsersUseCase.execute();
 
-    return res.status(200).json({ payload });
+    return res.send({ payload });
   };
 }

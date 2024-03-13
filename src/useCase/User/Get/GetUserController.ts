@@ -11,6 +11,6 @@ export class GetUserController {
         await getFile(jwt, payload.photo).then((data) => console.log(data))
     );
 
-    return res.status(200).json({ payload });
+    return res.send({ payload });
   }
 }

@@ -32,4 +32,4 @@ const ActivityRegister = new Schema(
   { timestamps: true, _id: false }
 );
 
-export default model("activityRegister");
+export default model("activityRegister", ActivityRegister);
