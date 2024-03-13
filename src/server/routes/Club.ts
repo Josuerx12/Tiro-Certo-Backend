@@ -15,6 +15,7 @@ import { DeleteClubValidation } from "../../useCase/Club/Delete/Validations";
 import { EditClubUseCase } from "../../useCase/Club/Edit/EditClubUseCase";
 import { EditClubController } from "../../useCase/Club/Edit/EditClubController";
 import { EditClubValidations } from "../../useCase/Club/Edit/Validations";
+import { PowerGuard } from "../../middlewares/PowerGuard";
 
 // Get Club
 const getOneUseCase = new GetClubUseCase();
@@ -36,13 +37,17 @@ const deleteController = new DeleteClubController(deleteUseCase);
 const editUseCase = new EditClubUseCase();
 const editController = new EditClubController(editUseCase);
 
+// Power Guard
+const power = new PowerGuard();
+
 const ClubRoutes = Router();
 
 ClubRoutes.get("/:id", AuthGuard, getOneController.handle);
-ClubRoutes.get("/", AuthGuard, getAllController.handle);
+ClubRoutes.get("/", AuthGuard, power.adminAndFounder, getAllController.handle);
 ClubRoutes.post(
-  "/new",
+  "/",
   AuthGuard,
+  power.adminAndFounder,
   Upload.single("club-logo"),
   CreateClubValidations,
   validator,
@@ -51,6 +56,7 @@ ClubRoutes.post(
 ClubRoutes.delete(
   "/:id",
   AuthGuard,
+  power.founder,
   DeleteClubValidation,
   validator,
   deleteController.handle
@@ -58,6 +64,7 @@ ClubRoutes.delete(
 ClubRoutes.put(
   "/:id",
   AuthGuard,
+  power.adminAndFounder,
   Upload.single("club-logo"),
   EditClubValidations,
   validator,

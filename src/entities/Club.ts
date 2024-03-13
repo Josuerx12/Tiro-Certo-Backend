@@ -5,8 +5,7 @@ const Club = new Schema(
   {
     _id: { type: String, default: v4() },
     name: String,
-    long: Number,
-    lat: Number,
+    geoLocation: String,
     cr: String,
     cnpj: String,
     logo: { type: String, default: null },

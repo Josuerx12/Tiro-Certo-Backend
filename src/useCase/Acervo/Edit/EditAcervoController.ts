@@ -5,7 +5,10 @@ export class EditAcervoController {
   constructor(private EditAcervoUseCase: EditAcervoUseCase) {}
 
   handle = async (req: Request, res: Response) => {
-    const payload = await this.EditAcervoUseCase.execute(req.user, req.body);
+    const payload = await this.EditAcervoUseCase.execute(
+      req.user,
+      req.body.weapons
+    );
 
     return res.status(200).json({ payload });
   };

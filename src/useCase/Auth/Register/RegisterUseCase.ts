@@ -19,7 +19,7 @@ export default class RegisterUseCase {
       supervisor: false,
     });
 
-    await Acervo.create({ userID: user._id });
+    await Acervo.create({ userID: user._id, _id: uuidv4() });
 
     return `Usuário ${user.name}, criado com sucesso!`;
   }

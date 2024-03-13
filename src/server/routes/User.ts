@@ -8,6 +8,7 @@ import { EditUserController } from "../../useCase/User/Edit/EditUserController";
 import { GetUsersUseCase } from "../../useCase/User/GetAll/GetUsersUseCase";
 import { GetUsersController } from "../../useCase/User/GetAll/GetUsersController";
 import { GetUserController } from "../../useCase/User/Get/GetUserController";
+import { PowerGuard } from "../../middlewares/PowerGuard";
 
 const userRoutes = Router();
 
@@ -22,6 +23,9 @@ const getAllController = new GetUsersController(getAllCase);
 // GET ONE
 const getOneController = new GetUserController();
 
+// Power Guard
+const power = new PowerGuard();
+
 userRoutes.put(
   "/:id",
   AuthGuard,
@@ -31,7 +35,12 @@ userRoutes.put(
   editController.handle
 );
 
-userRoutes.get("/all", AuthGuard, getAllController.handle);
+userRoutes.get(
+  "/all",
+  AuthGuard,
+  power.adminAndFounder,
+  getAllController.handle
+);
 userRoutes.get("/", AuthGuard, getOneController.handle);
 
 export { userRoutes };

@@ -1,7 +1,6 @@
 export interface IEditClubDTO {
   name?: string;
-  long?: string;
-  lat?: string;
+  geoLocation?: number;
   cr?: string;
   cnpj?: string;
   users?: [string] | [];

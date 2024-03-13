@@ -8,6 +8,10 @@ export class EditClubUseCase {
     clubUsers: string[] | [],
     newUsers: string[] | []
   ): boolean {
+    if (!clubUsers || !newUsers) {
+      return false;
+    }
+
     const clubUsersUnique = new Set(clubUsers.map((user) => user));
 
     for (const user of newUsers) {

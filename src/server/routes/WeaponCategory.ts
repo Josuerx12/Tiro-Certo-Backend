@@ -12,6 +12,7 @@ import { DeleteWeaponCategoryController } from "../../useCase/WeaponCategory/Del
 import { EditWeaponsCategoryValidation } from "../../useCase/WeaponCategory/Edit/Validations";
 import { EditWeaponCategoryUseCase } from "../../useCase/WeaponCategory/Edit/EditWeaponCategoryUseCase";
 import { EditWeaponCategoryController } from "../../useCase/WeaponCategory/Edit/EditWeaponCategoryController";
+import { PowerGuard } from "../../middlewares/PowerGuard";
 
 // Get all
 const getAllUseCase = new GetAllWeaponCategoryUseCase();
@@ -29,21 +30,31 @@ const deleteController = new DeleteWeaponCategoryController(deleteUseCase);
 const editUseCase = new EditWeaponCategoryUseCase();
 const editController = new EditWeaponCategoryController(editUseCase);
 
+// Power controll
+const power = new PowerGuard();
+
 const WeaponCategoriesRoutes = Router();
 
 WeaponCategoriesRoutes.get("/", AuthGuard, getAllController.handle);
 WeaponCategoriesRoutes.post(
   "/",
   AuthGuard,
+  power.adminAndFounder,
   Upload.single("category-logo"),
   CreateWeaponCategoryValidation,
   validator,
   createController.handle
 );
-WeaponCategoriesRoutes.delete("/:id", AuthGuard, deleteController.handle);
+WeaponCategoriesRoutes.delete(
+  "/:id",
+  AuthGuard,
+  power.founder,
+  deleteController.handle
+);
 WeaponCategoriesRoutes.put(
   "/:id",
   AuthGuard,
+  power.adminAndFounder,
   Upload.single("category-logo"),
   EditWeaponsCategoryValidation,
   validator,

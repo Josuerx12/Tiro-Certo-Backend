@@ -2,10 +2,11 @@ import { multerFile } from "../../../config/Upload";
 import Club from "../../../entities/Club";
 import { ICreateClubDTO } from "./CreateClubDTO";
 import { uploadDrive, auth } from "../../../config/GDrive";
+import { v4 } from "uuid";
 
 export class CreateClubUseCase {
   async execute(credentials: ICreateClubDTO, logo: multerFile) {
-    const club = await Club.create(credentials);
+    const club = await Club.create({ ...credentials, _id: v4() });
 
     if (logo) {
       await auth().then(

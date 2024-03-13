@@ -2,7 +2,6 @@ import Acervo from "../../../entities/Acervo";
 import { IUser } from "../../User/UserInterface";
 
 export type Weapons = {
-  _id: String;
   name: String;
   categoryId: String;
   modelo: String;
@@ -16,7 +15,9 @@ export class EditAcervoUseCase {
 
     acervo.weapons.push(...weapons);
 
-    await acervo.save();
+    console.log(acervo);
+
+    // await acervo.save();
 
     return acervo;
   }

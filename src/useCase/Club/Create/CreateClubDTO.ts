@@ -1,7 +1,6 @@
 export interface ICreateClubDTO {
   name: string;
-  long: string;
-  lat: string;
+  geoLocation: string;
   cr: string;
   cnpj: string;
   users?: [string] | [];

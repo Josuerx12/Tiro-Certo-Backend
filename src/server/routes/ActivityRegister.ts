@@ -14,6 +14,7 @@ import { CreateActivityRegisterValidations } from "../../useCase/ActivityRegiste
 import { DeleteActivityRegisterValidation } from "../../useCase/ActivityRegister/Delete/Validations";
 import { DeleteActivityRegisterUseCase } from "../../useCase/ActivityRegister/Delete/DeleteActivityRegisterUseCase";
 import { DeleteActivityRegisterController } from "../../useCase/ActivityRegister/Delete/DeleteActivityRegisterController";
+import { PowerGuard } from "../../middlewares/PowerGuard";
 
 // Get Activity
 const getByIdUseCase = new GetActivityRegisterUseCase();
@@ -37,6 +38,9 @@ const createController = new CreateActivityRegisterController(createUseCase);
 const deleteUseCase = new DeleteActivityRegisterUseCase();
 const deleteController = new DeleteActivityRegisterController(deleteUseCase);
 
+// Power Guard
+const power = new PowerGuard();
+
 const ActivityRegisterRoutes = Router();
 
 ActivityRegisterRoutes.get("/", AuthGuard, getByUserController.handle);
@@ -47,10 +51,16 @@ ActivityRegisterRoutes.get(
   validator,
   getByIdController.handle
 );
-ActivityRegisterRoutes.get("/all", AuthGuard, getAllController.handle);
+ActivityRegisterRoutes.get(
+  "/all",
+  AuthGuard,
+  power.adminAndFounder,
+  getAllController.handle
+);
 ActivityRegisterRoutes.post(
   "/",
   AuthGuard,
+  power.adminAndFounder,
   CreateActivityRegisterValidations,
   validator,
   createController.handle
@@ -58,6 +68,7 @@ ActivityRegisterRoutes.post(
 ActivityRegisterRoutes.delete(
   "/:id",
   AuthGuard,
+  power.founder,
   DeleteActivityRegisterValidation,
   validator,
   deleteController.handle

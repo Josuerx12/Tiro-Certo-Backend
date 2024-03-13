@@ -3,20 +3,10 @@ import { v4 } from "uuid";
 
 const Acervo = new Schema(
   {
-    _id: { type: String, default: v4() },
+    _id: String,
     userID: String,
-    weapons: {
-      type: [
-        {
-          _id: { type: String, default: v4() },
-          name: String,
-          categoryId: String,
-          modelo: String,
-          registro: String,
-          validade: String,
-        },
-        { _id: false },
-      ],
+    weaponsId: {
+      type: [String],
       default: [],
     },
   },

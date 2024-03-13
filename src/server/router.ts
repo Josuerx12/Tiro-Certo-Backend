@@ -13,10 +13,10 @@ routesRouter.get("/", (req: Request, res: Response) =>
 );
 
 routesRouter.use("/auth", authRoutes);
-routesRouter.use("/user", userRoutes);
-routesRouter.use("/club", ClubRoutes);
-routesRouter.use("/acervo", AcervoRoutes);
-routesRouter.use("/activityRegister", ActivityRegisterRoutes);
-routesRouter.use("/weaponsCategory", WeaponCategoriesRoutes);
+routesRouter.use("/users", userRoutes);
+routesRouter.use("/clubs", ClubRoutes);
+routesRouter.use("/acervos", AcervoRoutes);
+routesRouter.use("/activityRegisters", ActivityRegisterRoutes);
+routesRouter.use("/weaponsCategories", WeaponCategoriesRoutes);
 
 export { routesRouter };

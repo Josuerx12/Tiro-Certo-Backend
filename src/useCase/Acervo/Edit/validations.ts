@@ -12,10 +12,12 @@ const AcervoEditValidations = [
       if (!acervo) {
         throw new Error("Nenhuma acervo encontrado para o usuário atual!");
       }
-      const weaponIds = value.map((weapon) => weapon.registro);
+
+      const uniqueWeaponsIds = new Set(value.map((weapon) => weapon.registro));
+
       const existingWeaponIds = acervo.weapons.map((weapon) => weapon.registro);
 
-      const duplicateWeaponIds = weaponIds.filter((weaponId) =>
+      const duplicateWeaponIds = uniqueWeaponsIds.filter((weaponId) =>
         existingWeaponIds.includes(weaponId)
       );
 
@@ -23,6 +25,18 @@ const AcervoEditValidations = [
         throw new Error(
           "Armas já cadastradas: " + duplicateWeaponIds.join(", ")
         );
+      }
+
+      for (let i = 0; i < value.length; i++) {
+        if (
+          !value[i].validade ||
+          !value[i].registro ||
+          !value[i].name ||
+          !value[i].modelo ||
+          !value[i].categoryId
+        ) {
+          throw new Error("Verifique as credenciais e tente novamente!");
+        }
       }
 
       return true;
