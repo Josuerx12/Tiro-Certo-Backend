@@ -5,6 +5,7 @@ import { ClubRoutes } from "./routes/Club";
 import { AcervoRoutes } from "./routes/Arcevo";
 import { ActivityRegisterRoutes } from "./routes/ActivityRegister";
 import { WeaponCategoriesRoutes } from "./routes/WeaponCategory";
+import { WeaponRoutes } from "./routes/Weapon";
 
 const routesRouter = Router();
 
@@ -18,5 +19,6 @@ routesRouter.use("/clubs", ClubRoutes);
 routesRouter.use("/acervos", AcervoRoutes);
 routesRouter.use("/activityRegisters", ActivityRegisterRoutes);
 routesRouter.use("/weaponsCategories", WeaponCategoriesRoutes);
+routesRouter.use("/weapons", WeaponRoutes);
 
 export { routesRouter };

@@ -1,7 +1,7 @@
 import ActivityRegister from "../../../entities/ActivityRegister";
 
 export class GetActivitiesRegisterUseCase {
-  async execute(id: string) {
+  async execute() {
     const activityRegister = await ActivityRegister.find();
     return activityRegister;
   }

@@ -37,7 +37,7 @@ const WeaponValidation = [
 
       return true;
     }),
-  body("validade").isDate().withMessage("Data deve ser valida!"),
+  body("validade").isISO8601().withMessage("Data deve ser valida!"),
 ];
 
 export { WeaponValidation };

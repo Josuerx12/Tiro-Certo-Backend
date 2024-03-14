@@ -45,7 +45,7 @@ const ActivityRegisterRoutes = Router();
 
 ActivityRegisterRoutes.get("/", AuthGuard, getByUserController.handle);
 ActivityRegisterRoutes.get(
-  "/:id",
+  "/details/:id",
   AuthGuard,
   GetActivityRegisterValidation,
   validator,

@@ -50,14 +50,25 @@ export class CreateActivityRegisterUseCase {
   }
 
   async execute(credentials: ICreateActivityRegisterDTO, user: IUser) {
-    const { long, lat, clubId, activity, weapons } = credentials;
+    const { userGeoLocation, clubId, activity, weapons } = credentials;
     const club = await Club.findById(clubId);
 
     if (!club) {
       throw new Error("Clube id: " + clubId + ", não encontrado!");
     }
 
-    if (!this.isWithinRadius(lat, long, club.lat, club.long, 1)) {
+    const clubLocation = club.geoLocation.trim().split(",");
+    const userLocation = userGeoLocation.trim().split(",");
+
+    if (
+      !this.isWithinRadius(
+        Number(userLocation[0]),
+        Number(userLocation[1]),
+        Number(clubLocation[0]),
+        Number(clubLocation[1]),
+        1
+      )
+    ) {
       throw new Error("Localização não compativel com a do clube!");
     }
 
@@ -71,7 +82,13 @@ export class CreateActivityRegisterUseCase {
       }
     }
 
-    await ActivityRegister.create({
+    if (!user.cr) {
+      throw new Error(
+        "Usuário sem cr cadastrado, adicione seu cr a sua conta para continuar!"
+      );
+    }
+
+    const reg = await ActivityRegister.create({
       ownerID: user._id,
       activity: activity.toLowerCase(),
       club,
@@ -80,5 +97,7 @@ export class CreateActivityRegisterUseCase {
       cr: user.cr,
       weapons,
     });
+
+    return `Registro de atividade id: ${reg._id}, criado com sucesso!`;
   }
 }

@@ -24,6 +24,7 @@ const ActivityRegister = new Schema(
           modelo: String,
           registro: String,
           validade: String,
+          disparos: Number,
         },
       ],
     },

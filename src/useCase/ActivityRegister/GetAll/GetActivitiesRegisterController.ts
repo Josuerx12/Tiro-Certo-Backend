@@ -7,9 +7,7 @@ export class GetActivitiesRegisterController {
   ) {}
 
   handle = async (req: Request, res: Response) => {
-    const payload = await this.GetActivitiesRegisterUseCase.execute(
-      req.params.id
-    );
+    const payload = await this.GetActivitiesRegisterUseCase.execute();
     return res.send({ payload });
   };
 }
