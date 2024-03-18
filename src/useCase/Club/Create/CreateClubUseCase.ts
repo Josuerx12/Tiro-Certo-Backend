@@ -1,18 +1,20 @@
 import { multerFile } from "../../../config/Upload";
 import Club from "../../../entities/Club";
 import { ICreateClubDTO } from "./CreateClubDTO";
-import { uploadDrive, auth } from "../../../config/GDrive";
 import { v4 } from "uuid";
+import { dbx } from "../../../config/Dbox";
 
 export class CreateClubUseCase {
   async execute(credentials: ICreateClubDTO, logo: multerFile) {
     const club = await Club.create({ ...credentials, _id: v4() });
 
     if (logo) {
-      await auth().then(
-        async (token) =>
-          await uploadDrive(token, logo).then((res) => (club.logo = res.id))
-      );
+      await dbx
+        .filesUpload({
+          path: `/tirofacil/${v4()}.${logo.mimetype.split("/")[1]}`,
+          contents: logo.buffer,
+        })
+        .then((res) => console.log(res));
 
       await club.save();
     }

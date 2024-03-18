@@ -1,7 +1,6 @@
 import { multerFile } from "../../../config/Upload";
 import Club from "../../../entities/Club";
 import { IEditClubDTO } from "./EditClubDTO";
-import { deleteToDrive, uploadDrive, auth } from "../../../config/GDrive";
 
 export class EditClubUseCase {
   hasDuplicateUsers(
@@ -31,20 +30,6 @@ export class EditClubUseCase {
     }
 
     if (logo) {
-      if (club.logo) {
-        await auth().then(
-          async (token) => await deleteToDrive(token, club.logo)
-        );
-      }
-
-      await auth().then(
-        async (token) =>
-          await uploadDrive(token, logo).then(
-            async (res) =>
-              await club.updateOne({ ...credentials, logo: res.id })
-          )
-      );
-
       return `Club ${club.name}, editado com sucesso!`;
     }
 

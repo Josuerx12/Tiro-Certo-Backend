@@ -13,17 +13,6 @@ export class DeleteUserUseCase {
       );
     }
 
-    if (user.photo) {
-      unlink(
-        path.join(__dirname, "..", "..", "..", "images/") + user.photo,
-        (err) => {
-          if (err) {
-            throw err;
-          }
-        }
-      );
-    }
-
     await Acervo.findOneAndDelete({ userid: user._id });
 
     await user.deleteOne();

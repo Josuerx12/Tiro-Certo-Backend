@@ -1,7 +1,7 @@
 import User from "../../../entities/User";
 import { IUser } from "../UserInterface";
 import { multerFile } from "../../../config/Upload";
-import { auth, deleteToDrive, uploadDrive } from "../../../config/GDrive";
+import { dbx } from "../../../config/Dbox";
 import { v4 } from "uuid";
 
 export class EditUserUseCase {
@@ -17,16 +17,8 @@ export class EditUserUseCase {
       }
 
       if (user.photo) {
-        await auth().then((jwt) => deleteToDrive(jwt, user.photo));
       }
 
-      await auth().then(
-        async (jwt) =>
-          await uploadDrive(jwt, file).then(
-            async (data) =>
-              await user.updateOne({ ...credentials, photo: data.id })
-          )
-      );
       return `Usuário: ${user.name}, editado com sucesso!`;
     }
 
