@@ -22,6 +22,7 @@ export class CreateWeaponCategoryUseCase {
         await uploadDrive(token, logo).then(
           async (res) =>
             await WeaponCategory.create({
+              _id: v4(),
               name,
               logo: res.id,
             })
