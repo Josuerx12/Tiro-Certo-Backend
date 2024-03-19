@@ -7,7 +7,9 @@ export class DeleteWeaponCategoryController {
   ) {}
 
   handle = async (req: Request, res: Response) => {
-    const payload = this.DeleteWeaponCategoryUseCase.execute(req.params.id);
+    const payload = await this.DeleteWeaponCategoryUseCase.execute(
+      req.params.id
+    );
     return res.status(200).json({ payload });
   };
 }

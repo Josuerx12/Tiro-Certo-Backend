@@ -22,11 +22,20 @@ export class CreateWeaponCategoryUseCase {
         path: "/tirofacil/" + logo.originalname,
         contents: logo.buffer,
       })
+      .then(async (res) => {
+        return await dbx.sharingCreateSharedLinkWithSettings({
+          path: res.result.path_display,
+        });
+      })
       .then(
         async (res) =>
           await WeaponCategory.create({
             _id: v4(),
-            logo: res.result.path_display,
+            logoURL: res.result.url.replace(
+              "www.dropbox.com",
+              "dl.dropboxusercontent.com"
+            ),
+            logoPath: res.result.path_lower,
             name,
           })
       );

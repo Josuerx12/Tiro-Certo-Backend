@@ -1,8 +1,10 @@
+import { config } from "dotenv";
 import { Dropbox } from "dropbox";
 
+config();
+
 const dbx = new Dropbox({
-  accessToken:
-    "sl.Bxoo90ymilMpyvFhaFs7izKJ9AZt8cSIAxbR4UdgRs9ByzMVsql10oIYYlf7NkGkv-6cGzuBbPxl51agqGMl_1rV8xPaBvvMvJjLt5-wB0EFCi_FeUiGtuVzkWOobyMivTjY4aizBayt",
+  accessToken: process.env.DBX_TOKEN,
 });
 
 export { dbx };

@@ -1,7 +1,5 @@
-import { unlink } from "fs";
 import User from "../../../entities/User";
-import path from "path";
-import Acervo from "../../../entities/Acervo";
+import { dbx } from "../../../config/Dbox";
 
 export class DeleteUserUseCase {
   async execute(id: string) {
@@ -13,7 +11,9 @@ export class DeleteUserUseCase {
       );
     }
 
-    await Acervo.findOneAndDelete({ userid: user._id });
+    if (user.photoPath) {
+      await dbx.filesDeleteV2({ path: user.photoPath });
+    }
 
     await user.deleteOne();
     return `Usuário: ${user.name}, deletado com sucesso!`;

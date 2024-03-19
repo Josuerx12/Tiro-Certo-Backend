@@ -14,7 +14,19 @@ export class CreateClubUseCase {
           path: `/tirofacil/${v4()}.${logo.mimetype.split("/")[1]}`,
           contents: logo.buffer,
         })
-        .then((res) => console.log(res));
+        .then(
+          async (res) =>
+            await dbx.sharingCreateSharedLinkWithSettings({
+              path: res.result.path_display,
+            })
+        )
+        .then((res) => {
+          club.logoURL = res.result.url.replace(
+            "www.dropbox.com",
+            "dl.dropboxusercontent.com"
+          );
+          club.logoPath = res.result.path_lower;
+        });
 
       await club.save();
     }

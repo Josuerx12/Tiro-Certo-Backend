@@ -16,8 +16,30 @@ export class EditUserUseCase {
         throw new Error("Imagens devem ser no formato: jpeg, jpg ou png!");
       }
 
-      if (user.photo) {
+      if (user.photoPath) {
+        await dbx.filesDeleteV2({ path: user.photoPath });
       }
+
+      await dbx
+        .filesUpload({
+          path: "/tirofacil/" + v4() + "." + file.mimetype.split("/")[1],
+        })
+        .then(
+          async (res) =>
+            await dbx.sharingCreateSharedLinkWithSettings({
+              path: res.result.path_lower,
+            })
+        )
+        .then((res) => {
+          user.photoURL = res.result.url.replace(
+            "www.dropbox.com",
+            "dl.dropboxusercontent.com"
+          );
+          user.photoPath = res.result.path_lower;
+        });
+      await user.save();
+
+      await user.updateOne(credentials);
 
       return `Usuário: ${user.name}, editado com sucesso!`;
     }

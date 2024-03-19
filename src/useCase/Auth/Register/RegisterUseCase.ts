@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import User from "../../../entities/User";
 import { IRegisterDTO } from "./RegisterDTO";
 import { genSalt, hash } from "bcryptjs";
-import Acervo from "../../../entities/Acervo";
 
 export default class RegisterUseCase {
   async execute(credentials: IRegisterDTO) {
@@ -18,8 +17,6 @@ export default class RegisterUseCase {
       admin: false,
       supervisor: false,
     });
-
-    await Acervo.create({ userID: user._id, _id: uuidv4() });
 
     return `Usuário ${user.name}, criado com sucesso!`;
   }

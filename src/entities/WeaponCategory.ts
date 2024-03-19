@@ -5,7 +5,8 @@ const WeaponCategory = new Schema(
   {
     _id: { type: String, default: v4() },
     name: String,
-    logo: String,
+    logoURL: String,
+    logoPath: String,
   },
   { timestamps: true, _id: false }
 );

@@ -8,7 +8,8 @@ const Club = new Schema(
     geoLocation: String,
     cr: String,
     cnpj: String,
-    logo: { type: String, default: null },
+    logoPath: { type: String, default: null },
+    logoURL: { type: String, default: null },
     users: { type: [String], _id: false, default: [] },
   },
   { timestamps: true, _id: false }

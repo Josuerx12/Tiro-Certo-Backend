@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+import { dbx } from "../../../config/Dbox";
 import { multerFile } from "../../../config/Upload";
 import Club from "../../../entities/Club";
 import { IEditClubDTO } from "./EditClubDTO";
@@ -30,7 +32,28 @@ export class EditClubUseCase {
     }
 
     if (logo) {
-      return `Club ${club.name}, editado com sucesso!`;
+      if (club.logoPath) {
+        await dbx.filesDeleteV2({ path: club.logoPath });
+      }
+
+      await dbx
+        .filesUpload({
+          path: "/tirofacil/" + v4() + "." + logo.mimetype.split("/")[1],
+        })
+        .then(
+          async (res) =>
+            await dbx.sharingCreateSharedLinkWithSettings({
+              path: res.result.path_lower,
+            })
+        )
+        .then((res) => {
+          club.logoPath = res.result.path_lower;
+          club.logoURL = res.result.url.replace(
+            "www.dropbox.com",
+            "dl.dropboxusercontent.com"
+          );
+        });
+      await club.save();
     }
 
     await club.updateOne(credentials);
