@@ -23,6 +23,7 @@ export class EditUserUseCase {
       await dbx
         .filesUpload({
           path: "/tirofacil/" + v4() + "." + file.mimetype.split("/")[1],
+          contents: file.buffer,
         })
         .then(
           async (res) =>
