@@ -5,7 +5,25 @@ import { dbx } from "../../../config/Dbox";
 import { v4 } from "uuid";
 
 export class EditUserUseCase {
-  async execute(id: string, credentials: IUser, file?: multerFile) {
+  async execute(
+    id: string,
+    credentials: IUser,
+    userLogged: IUser,
+    file?: multerFile
+  ) {
+    if (!userLogged.founder && !userLogged.admin && userLogged._id !== id) {
+      throw new Error("Você não é autorizado a fazer está edição!");
+    }
+    if (
+      !userLogged.founder &&
+      !userLogged.admin &&
+      (credentials.admin || credentials.founder)
+    ) {
+      throw new Error(
+        "Você não tem permissão para se tornar um administrador!"
+      );
+    }
+
     const user = await User.findById(id);
     if (file) {
       file.originalname = v4() + "." + file.mimetype.split("/")[1];
