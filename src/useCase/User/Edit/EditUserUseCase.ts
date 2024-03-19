@@ -27,7 +27,7 @@ export class EditUserUseCase {
         .then(
           async (res) =>
             await dbx.sharingCreateSharedLinkWithSettings({
-              path: res.result.path_lower,
+              path: res.result.path_display,
             })
         )
         .then((res) => {
