@@ -28,6 +28,7 @@ const registerValidations = [
       }
       return true;
     }),
+  body("cr").isString().withMessage("CR é obrigatório no cadastro!"),
   body("password")
     .isStrongPassword()
     .withMessage(
