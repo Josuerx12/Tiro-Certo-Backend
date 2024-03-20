@@ -8,7 +8,7 @@ const WeaponValidation = [
     .withMessage("Nome da arma deve ser informado!")
     .isLength({ min: 3 })
     .withMessage("Nome da arma deve conter no mínimo 3 caracteres!"),
-  body("categoryID")
+  body("categoryId")
     .isUUID()
     .withMessage("Categoria selecionada não é valida!")
     .custom(async (value) => {
