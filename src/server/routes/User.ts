@@ -9,6 +9,8 @@ import { GetUsersUseCase } from "../../useCase/User/GetAll/GetUsersUseCase";
 import { GetUsersController } from "../../useCase/User/GetAll/GetUsersController";
 import { GetUserController } from "../../useCase/User/Get/GetUserController";
 import { PowerGuard } from "../../middlewares/PowerGuard";
+import { DeleteUserController } from "../../useCase/User/Delete/DeleteUserController";
+import { DeleteUserUseCase } from "../../useCase/User/Delete/DeleteUserUseCase";
 
 const userRoutes = Router();
 
@@ -23,6 +25,10 @@ const getAllController = new GetUsersController(getAllCase);
 // GET ONE
 const getOneController = new GetUserController();
 
+// Delete One
+const deleteUseCase = new DeleteUserUseCase();
+const deleteController = new DeleteUserController(deleteUseCase);
+
 // Power Guard
 const power = new PowerGuard();
 
@@ -34,6 +40,7 @@ userRoutes.put(
   validator,
   editController.handle
 );
+userRoutes.delete("/:id", AuthGuard, power.founder, deleteController.handle);
 
 userRoutes.get(
   "/all",
