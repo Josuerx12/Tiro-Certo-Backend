@@ -2,11 +2,24 @@ import User from "../../../entities/User";
 import { IUser } from "../UserInterface";
 import { dbx } from "../../../config/Dbox";
 import { v4 } from "uuid";
+import { genSalt, hash } from "bcryptjs";
+
+type EditUserCredentials = {
+  name: string;
+  email: string;
+  cpf: Number;
+  cr: number | null;
+  ["profile-pic"]: Express.Multer.File;
+  admin: boolean;
+  founder: boolean;
+  password: string;
+  confirmPassword: string;
+};
 
 export class EditUserUseCase {
   async execute(
     id: string,
-    credentials: IUser,
+    credentials: EditUserCredentials,
     userLogged: IUser,
     file?: Express.Multer.File
   ) {
@@ -56,9 +69,12 @@ export class EditUserUseCase {
           user.photoPath = res.result.path_lower;
         });
       await user.save();
+    }
 
-      await user.updateOne(credentials);
-
+    if (credentials.password) {
+      const salt = await genSalt(10);
+      const passHash = await hash(credentials.password, salt);
+      await user.updateOne({ ...credentials, password: passHash });
       return `Usuário: ${user.name}, editado com sucesso!`;
     }
 

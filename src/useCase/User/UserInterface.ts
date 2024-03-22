@@ -4,12 +4,8 @@ export interface IUser {
   email: string;
   cpf: Number;
   cr: number | null;
-  photo: string | null;
-  imageSignature: string | null;
-  fingerPrintSignature: string | null;
-  password: string;
+  photoURL: string;
+  photoPath: string;
   admin: boolean;
-  supervisor: boolean;
-  clubs: string[];
   founder: boolean;
 }
