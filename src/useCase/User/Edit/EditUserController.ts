@@ -8,8 +8,8 @@ export class EditUserController {
     const payload = await this.EditUSerUseCase.execute(
       req.params.id,
       req.body,
-      req.file,
-      req.user
+      req.user,
+      req.file
     );
 
     return res.status(200).json({ payload });

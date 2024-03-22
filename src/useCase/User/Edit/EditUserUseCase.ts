@@ -1,6 +1,5 @@
 import User from "../../../entities/User";
 import { IUser } from "../UserInterface";
-import { multerFile } from "../../../config/Upload";
 import { dbx } from "../../../config/Dbox";
 import { v4 } from "uuid";
 
@@ -9,7 +8,7 @@ export class EditUserUseCase {
     id: string,
     credentials: IUser,
     userLogged: IUser,
-    file?: multerFile
+    file?: Express.Multer.File
   ) {
     if (!userLogged.founder && !userLogged.admin && userLogged._id !== id) {
       throw new Error("Você não é autorizado a fazer está edição!");
