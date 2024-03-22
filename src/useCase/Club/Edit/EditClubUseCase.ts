@@ -39,6 +39,7 @@ export class EditClubUseCase {
       await dbx
         .filesUpload({
           path: "/tirofacil/" + v4() + "." + logo.mimetype.split("/")[1],
+          contents: logo.buffer,
         })
         .then(
           async (res) =>
