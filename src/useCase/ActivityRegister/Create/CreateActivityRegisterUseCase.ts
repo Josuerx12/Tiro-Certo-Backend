@@ -1,4 +1,5 @@
 import ActivityRegister from "../../../entities/ActivityRegister";
+import { v4 } from "uuid";
 import Club from "../../../entities/Club";
 import { IUser } from "../../User/UserInterface";
 import {
@@ -89,6 +90,7 @@ export class CreateActivityRegisterUseCase {
     }
 
     const reg = await ActivityRegister.create({
+      _id: v4(),
       ownerID: user._id,
       activity: activity.toLowerCase(),
       club,
