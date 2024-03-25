@@ -1,8 +1,8 @@
 import { v4 } from "uuid";
-import { dbx } from "../../../config/Dbox";
 import { multerFile } from "../../../config/Upload";
 import Club from "../../../entities/Club";
 import { IEditClubDTO } from "./EditClubDTO";
+import { admin } from "../../../config/firebase";
 
 export class EditClubUseCase {
   hasDuplicateUsers(
@@ -32,28 +32,25 @@ export class EditClubUseCase {
     }
 
     if (logo) {
+      logo.originalname = v4() + "." + logo.mimetype.split("/")[1];
+
+      const bucket = admin.storage().bucket();
+
       if (club.logoPath) {
-        await dbx.filesDeleteV2({ path: club.logoPath });
+        const oldFile = bucket.file(club.logoPath);
+
+        if (await oldFile.exists()) {
+          await oldFile.delete();
+        }
       }
 
-      await dbx
-        .filesUpload({
-          path: "/tirofacil/" + v4() + "." + logo.mimetype.split("/")[1],
-          contents: logo.buffer,
-        })
-        .then(
-          async (res) =>
-            await dbx.sharingCreateSharedLinkWithSettings({
-              path: res.result.path_lower,
-            })
-        )
-        .then((res) => {
-          club.logoPath = res.result.path_lower;
-          club.logoURL = res.result.url.replace(
-            "www.dropbox.com",
-            "dl.dropboxusercontent.com"
-          );
-        });
+      const newFile = bucket.file(logo.originalname);
+
+      await newFile.save(logo.buffer);
+
+      club.logoURL = `https://storage.googleapis.com/${bucket.name}/${logo.originalname}`;
+      club.logoPath = logo.originalname;
+
       await club.save();
     }
 

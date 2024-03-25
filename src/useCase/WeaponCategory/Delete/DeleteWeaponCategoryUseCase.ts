@@ -1,4 +1,4 @@
-import { dbx } from "../../../config/Dbox";
+import { admin } from "../../../config/firebase";
 import WeaponCategory from "../../../entities/WeaponCategory";
 
 export class DeleteWeaponCategoryUseCase {
@@ -11,7 +11,13 @@ export class DeleteWeaponCategoryUseCase {
       );
     }
 
-    await dbx.filesDeleteV2({ path: existingCategory.logoPath });
+    const bucket = admin.storage().bucket();
+
+    const oldFile = bucket.file(existingCategory.logoPath);
+
+    if (await oldFile.exists()) {
+      await oldFile.delete();
+    }
 
     await existingCategory.deleteOne();
 

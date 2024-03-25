@@ -1,8 +1,8 @@
 import User from "../../../entities/User";
 import { IUser } from "../UserInterface";
-import { dbx } from "../../../config/Dbox";
 import { v4 } from "uuid";
 import { genSalt, hash } from "bcryptjs";
+import { admin } from "../../../config/firebase";
 
 type EditUserCredentials = {
   name: string;
@@ -38,6 +38,8 @@ export class EditUserUseCase {
 
     const user = await User.findById(id);
     if (file) {
+      const bucket = admin.storage().bucket();
+
       file.originalname = v4() + "." + file.mimetype.split("/")[1];
 
       const permitedFiles = ["image/jpeg", "image/jpg", "image/png"];
@@ -47,27 +49,20 @@ export class EditUserUseCase {
       }
 
       if (user.photoPath) {
-        await dbx.filesDeleteV2({ path: user.photoPath });
+        const fileFirebase = bucket.file(user.photoPath);
+
+        if (await fileFirebase.exists()) {
+          await fileFirebase.delete();
+        }
       }
 
-      await dbx
-        .filesUpload({
-          path: "/tirofacil/" + v4() + "." + file.mimetype.split("/")[1],
-          contents: file.buffer,
-        })
-        .then(
-          async (res) =>
-            await dbx.sharingCreateSharedLinkWithSettings({
-              path: res.result.path_display,
-            })
-        )
-        .then((res) => {
-          user.photoURL = res.result.url.replace(
-            "www.dropbox.com",
-            "dl.dropboxusercontent.com"
-          );
-          user.photoPath = res.result.path_lower;
-        });
+      const fileToUpload = bucket.file(file.originalname);
+
+      await fileToUpload.save(file.buffer);
+
+      user.photoURL = `https://storage.googleapis.com/${bucket.name}/${file.originalname}`;
+      user.photoPath = file.originalname;
+
       await user.save();
     }
 

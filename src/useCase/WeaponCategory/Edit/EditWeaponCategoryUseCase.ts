@@ -1,33 +1,28 @@
 import { v4 } from "uuid";
-import { dbx } from "../../../config/Dbox";
 import { multerFile } from "../../../config/Upload";
 import WeaponCategory from "../../../entities/WeaponCategory";
+import { admin } from "../../../config/firebase";
 
 export class EditWeaponCategoryUseCase {
   async execute(id: string, name: string, logo: multerFile) {
     const weaponCategory = await WeaponCategory.findById(id);
 
     if (logo) {
+      logo.originalname = v4() + "." + logo.mimetype.split("/")[1];
+
+      const bucket = admin.storage().bucket();
+
       if (weaponCategory.logoPath) {
-        await dbx.filesDeleteV2({ path: weaponCategory.logoPath });
+        const oldFile = bucket.file(weaponCategory.logoPath);
+
+        if (await oldFile.exists()) {
+          await oldFile.delete();
+        }
       }
-      await dbx
-        .filesUpload({
-          path: "/tirofacil/" + v4() + "." + logo.mimetype.split("/")[1],
-          contents: logo.buffer,
-        })
-        .then(async (res) => {
-          return await dbx.sharingCreateSharedLinkWithSettings({
-            path: res.result.path_display,
-          });
-        })
-        .then((res) => {
-          weaponCategory.logoURL = res.result.url.replace(
-            "www.dropbox.com",
-            "dl.dropboxusercontent.com"
-          );
-          weaponCategory.logoPath = res.result.path_lower;
-        });
+
+      const newFile = bucket.file(logo.originalname);
+
+      await newFile.save(logo.buffer);
     }
 
     if (name) {

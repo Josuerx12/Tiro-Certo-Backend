@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v4 } from "uuid";
 import User from "../../../entities/User";
 import { IRegisterDTO } from "./RegisterDTO";
 import { genSalt, hash } from "bcryptjs";
-import { dbx } from "../../../config/Dbox";
+import { admin } from "../../../config/firebase";
 
 export default class RegisterUseCase {
   async execute(credentials: IRegisterDTO, photo: Express.Multer.File) {
@@ -17,24 +17,16 @@ export default class RegisterUseCase {
     });
 
     if (photo) {
-      await dbx
-        .filesUpload({
-          path: "/tirocerto/" + uuidv4() + "." + photo.mimetype.split("/")[1],
-          contents: photo.buffer,
-        })
-        .then(
-          async (res) =>
-            await dbx.sharingCreateSharedLinkWithSettings({
-              path: res.result.path_lower,
-            })
-        )
-        .then((res) => {
-          (user.photoPath = res.result.path_lower),
-            (user.photoURL = res.result.url.replace(
-              "www.dropbox.com",
-              "dl.dropboxusercontent.com"
-            ));
-        });
+      const bucket = admin.storage().bucket();
+
+      photo.originalname = v4() + "." + photo.mimetype.split("/")[1];
+
+      const file = bucket.file(photo.originalname);
+
+      await file.save(photo.buffer);
+
+      user.photoURL = `https://storage.googleapis.com/${bucket.name}/${photo.originalname}`;
+      user.photoPath = photo.originalname;
 
       await user.save();
     }

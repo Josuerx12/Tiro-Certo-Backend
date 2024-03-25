@@ -1,5 +1,5 @@
+import { admin } from "../../../config/firebase";
 import User from "../../../entities/User";
-import { dbx } from "../../../config/Dbox";
 
 export class DeleteUserUseCase {
   async execute(id: string) {
@@ -12,7 +12,13 @@ export class DeleteUserUseCase {
     }
 
     if (user.photoPath) {
-      await dbx.filesDeleteV2({ path: user.photoPath });
+      const bucket = admin.storage().bucket();
+
+      const file = bucket.file(user.photoPath);
+
+      if (await file.exists()) {
+        await file.delete();
+      }
     }
 
     await user.deleteOne();
