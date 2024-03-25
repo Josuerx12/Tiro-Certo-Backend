@@ -51,7 +51,9 @@ export class EditUserUseCase {
       if (user.photoPath) {
         const fileFirebase = bucket.file(user.photoPath);
 
-        if (await fileFirebase.exists()) {
+        const existFile = await fileFirebase.exists();
+
+        if (!existFile[0]) {
           await fileFirebase.delete();
         }
       }
@@ -60,7 +62,7 @@ export class EditUserUseCase {
 
       await fileToUpload.save(file.buffer);
 
-      user.photoURL = `https://storage.googleapis.com/${bucket.name}/${file.originalname}`;
+      user.photoURL = fileToUpload.publicUrl();
       user.photoPath = file.originalname;
 
       await user.save();
