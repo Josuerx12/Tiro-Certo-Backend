@@ -8,6 +8,7 @@ export type TWeapon = {
 };
 
 export interface ICreateActivityRegisterDTO {
+  userId: string;
   userGeoLocation: string;
   weapons: TWeapon[];
   activity: string;

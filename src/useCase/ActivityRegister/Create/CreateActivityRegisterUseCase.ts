@@ -1,11 +1,11 @@
 import ActivityRegister from "../../../entities/ActivityRegister";
 import { v4 } from "uuid";
 import Club from "../../../entities/Club";
-import { IUser } from "../../User/UserInterface";
 import {
   ICreateActivityRegisterDTO,
   TWeapon,
 } from "./CreateActivityRegisterDTO";
+import User from "../../../entities/User";
 export class CreateActivityRegisterUseCase {
   degreesToRadians(degrees: number): number {
     return (degrees * Math.PI) / 180;
@@ -50,9 +50,10 @@ export class CreateActivityRegisterUseCase {
     return distance <= radiusKm;
   }
 
-  async execute(credentials: ICreateActivityRegisterDTO, user: IUser) {
-    const { userGeoLocation, clubId, activity, weapons } = credentials;
+  async execute(credentials: ICreateActivityRegisterDTO) {
+    const { userGeoLocation, clubId, activity, weapons, userId } = credentials;
     const club = await Club.findById(clubId);
+    const user = await User.findById(userId);
 
     if (!club) {
       throw new Error("Clube id: " + clubId + ", não encontrado!");
