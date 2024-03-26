@@ -35,7 +35,7 @@ const power = new PowerGuard();
 
 const WeaponCategoriesRoutes = Router();
 
-WeaponCategoriesRoutes.get("/", AuthGuard, getAllController.handle);
+WeaponCategoriesRoutes.get("/", getAllController.handle);
 WeaponCategoriesRoutes.post(
   "/",
   AuthGuard,
