@@ -54,7 +54,7 @@ userRoutes.get(
   power.adminAndFounder,
   getAllController.handle
 );
-userRoutes.get("/one/:cpf", getAllController.handle);
+userRoutes.get("/one/:cpf", getOneCpfController.handle);
 userRoutes.get("/", AuthGuard, getOneController.handle);
 
 export { userRoutes };
