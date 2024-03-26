@@ -14,8 +14,8 @@ export class DeleteWeaponCategoryUseCase {
     const bucket = admin.storage().bucket();
 
     const oldFile = bucket.file(existingCategory.logoPath);
-
-    if (await oldFile.exists()) {
+    const oldFileExists = await oldFile.exists();
+    if (oldFileExists[0]) {
       await oldFile.delete();
     }
 

@@ -53,7 +53,7 @@ export class EditUserUseCase {
 
         const existFile = await fileFirebase.exists();
 
-        if (!existFile[0]) {
+        if (existFile[0]) {
           await fileFirebase.delete();
         }
       }

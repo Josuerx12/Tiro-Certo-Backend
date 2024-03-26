@@ -17,7 +17,7 @@ export class CreateClubUseCase {
 
       await file.save(logo.buffer);
 
-      club.logoURL = `https://storage.googleapis.com/${bucket.name}/${logo.originalname}`;
+      club.logoURL = file.publicUrl();
 
       club.logoPath = logo.originalname;
 

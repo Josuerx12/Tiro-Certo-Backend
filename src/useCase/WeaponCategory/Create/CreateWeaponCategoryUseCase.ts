@@ -22,7 +22,7 @@ export class CreateWeaponCategoryUseCase {
     const file = bucket.file(logo.originalname);
 
     await file.save(logo.buffer).then(
-      async (res) =>
+      async () =>
         await WeaponCategory.create({
           _id: v4(),
           logoURL: file.publicUrl(),

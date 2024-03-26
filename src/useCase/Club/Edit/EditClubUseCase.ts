@@ -39,7 +39,9 @@ export class EditClubUseCase {
       if (club.logoPath) {
         const oldFile = bucket.file(club.logoPath);
 
-        if (await oldFile.exists()) {
+        const oldFileExists = await oldFile.exists();
+
+        if (oldFileExists[0]) {
           await oldFile.delete();
         }
       }
@@ -48,7 +50,7 @@ export class EditClubUseCase {
 
       await newFile.save(logo.buffer);
 
-      club.logoURL = `https://storage.googleapis.com/${bucket.name}/${logo.originalname}`;
+      club.logoURL = newFile.publicUrl();
       club.logoPath = logo.originalname;
 
       await club.save();

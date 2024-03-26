@@ -25,7 +25,7 @@ export default class RegisterUseCase {
 
       await file.save(photo.buffer);
 
-      user.photoURL = `https://storage.googleapis.com/${bucket.name}/${photo.originalname}`;
+      user.photoURL = file.publicUrl();
       user.photoPath = photo.originalname;
 
       await user.save();

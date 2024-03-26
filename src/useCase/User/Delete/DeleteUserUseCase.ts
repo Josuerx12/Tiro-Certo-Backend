@@ -16,7 +16,9 @@ export class DeleteUserUseCase {
 
       const file = bucket.file(user.photoPath);
 
-      if (await file.exists()) {
+      const fileExists = await file.exists();
+
+      if (fileExists[0]) {
         await file.delete();
       }
     }

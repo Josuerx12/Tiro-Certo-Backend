@@ -15,7 +15,9 @@ export class EditWeaponCategoryUseCase {
       if (weaponCategory.logoPath) {
         const oldFile = bucket.file(weaponCategory.logoPath);
 
-        if (await oldFile.exists()) {
+        const oldFileExists = await oldFile.exists();
+
+        if (oldFileExists[0]) {
           await oldFile.delete();
         }
       }
@@ -23,6 +25,9 @@ export class EditWeaponCategoryUseCase {
       const newFile = bucket.file(logo.originalname);
 
       await newFile.save(logo.buffer);
+
+      weaponCategory.logoPath = logo.originalname;
+      weaponCategory.logoURL = newFile.publicUrl();
     }
 
     if (name) {
