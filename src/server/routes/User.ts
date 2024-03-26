@@ -11,6 +11,8 @@ import { GetUserController } from "../../useCase/User/Get/GetUserController";
 import { PowerGuard } from "../../middlewares/PowerGuard";
 import { DeleteUserController } from "../../useCase/User/Delete/DeleteUserController";
 import { DeleteUserUseCase } from "../../useCase/User/Delete/DeleteUserUseCase";
+import { GetUsersByCpfUseCase } from "../../useCase/User/GetOneByCpf/GetUsersByCpfUseCase";
+import { GetUsersByCpfController } from "../../useCase/User/GetOneByCpf/GetUsersByCpfController";
 
 const userRoutes = Router();
 
@@ -21,6 +23,10 @@ const editController = new EditUserController(editUseCase);
 // GET ALL
 const getAllCase = new GetUsersUseCase();
 const getAllController = new GetUsersController(getAllCase);
+
+// GET CPF
+const getOneCpfUseCase = new GetUsersByCpfUseCase();
+const getOneCpfController = new GetUsersByCpfController(getOneCpfUseCase);
 
 // GET ONE
 const getOneController = new GetUserController();
@@ -48,6 +54,7 @@ userRoutes.get(
   power.adminAndFounder,
   getAllController.handle
 );
+userRoutes.get("/one/:cpf", getAllController.handle);
 userRoutes.get("/", AuthGuard, getOneController.handle);
 
 export { userRoutes };
