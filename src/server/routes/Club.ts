@@ -42,8 +42,8 @@ const power = new PowerGuard();
 
 const ClubRoutes = Router();
 
-ClubRoutes.get("/:id", AuthGuard, getOneController.handle);
-ClubRoutes.get("/", AuthGuard, getAllController.handle);
+ClubRoutes.get("/:id", getOneController.handle);
+ClubRoutes.get("/", getAllController.handle);
 ClubRoutes.post(
   "/",
   AuthGuard,
