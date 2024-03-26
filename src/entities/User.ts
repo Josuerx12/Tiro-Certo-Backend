@@ -6,7 +6,7 @@ const User = new Schema(
     _id: { type: String, default: uuidv4() },
     name: String,
     email: String,
-    cpf: Number,
+    cpf: String,
     cr: { type: Number, default: null },
     photoURL: { type: String, default: null },
     photoPath: { type: String, default: null },

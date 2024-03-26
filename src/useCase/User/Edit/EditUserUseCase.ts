@@ -7,7 +7,7 @@ import { admin } from "../../../config/firebase";
 type EditUserCredentials = {
   name: string;
   email: string;
-  cpf: Number;
+  cpf: string;
   cr: number | null;
   ["profile-pic"]: Express.Multer.File;
   admin: boolean;
@@ -75,7 +75,10 @@ export class EditUserUseCase {
       return `Usuário: ${user.name}, editado com sucesso!`;
     }
 
-    await user.updateOne(credentials);
+    await user.updateOne({
+      ...credentials,
+      cpf: credentials.cpf.replace(".", "").replace("-", "").trim(),
+    });
 
     return `Usuário: ${user.name}, editado com sucesso!`;
   }

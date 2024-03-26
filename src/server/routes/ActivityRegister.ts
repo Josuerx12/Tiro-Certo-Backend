@@ -59,7 +59,6 @@ ActivityRegisterRoutes.get(
 );
 ActivityRegisterRoutes.post(
   "/",
-  AuthGuard,
   CreateActivityRegisterValidations,
   validator,
   createController.handle
