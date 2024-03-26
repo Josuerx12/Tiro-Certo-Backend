@@ -60,7 +60,6 @@ ActivityRegisterRoutes.get(
 ActivityRegisterRoutes.post(
   "/",
   AuthGuard,
-  power.adminAndFounder,
   CreateActivityRegisterValidations,
   validator,
   createController.handle
