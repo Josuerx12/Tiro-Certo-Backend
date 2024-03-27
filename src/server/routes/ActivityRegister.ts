@@ -15,6 +15,8 @@ import { DeleteActivityRegisterValidation } from "../../useCase/ActivityRegister
 import { DeleteActivityRegisterUseCase } from "../../useCase/ActivityRegister/Delete/DeleteActivityRegisterUseCase";
 import { DeleteActivityRegisterController } from "../../useCase/ActivityRegister/Delete/DeleteActivityRegisterController";
 import { PowerGuard } from "../../middlewares/PowerGuard";
+import { GetActivityRegisterByUserIdUseCase } from "../../useCase/ActivityRegister/GetByUserId/GetActivityRegisterByUserUseCase";
+import { GetActivityRegisterByUserIdController } from "../../useCase/ActivityRegister/GetByUserId/GetActivityRegisterByUserController";
 
 // Get Activity
 const getByIdUseCase = new GetActivityRegisterUseCase();
@@ -28,6 +30,12 @@ const getAllController = new GetActivitiesRegisterController(getAllUseCase);
 const getByUserUseCase = new GetActivityRegisterByUserUseCase();
 const getByUserController = new GetActivityRegisterByUserController(
   getByUserUseCase
+);
+
+// Get By UserId
+const getByUserIdUseCase = new GetActivityRegisterByUserIdUseCase();
+const getByUserIdController = new GetActivityRegisterByUserIdController(
+  getByUserIdUseCase
 );
 
 // Create Activity
@@ -44,6 +52,7 @@ const power = new PowerGuard();
 const ActivityRegisterRoutes = Router();
 
 ActivityRegisterRoutes.get("/", AuthGuard, getByUserController.handle);
+ActivityRegisterRoutes.get("/user/:userId", getByUserIdController.handle);
 ActivityRegisterRoutes.get(
   "/details/:id",
   AuthGuard,
