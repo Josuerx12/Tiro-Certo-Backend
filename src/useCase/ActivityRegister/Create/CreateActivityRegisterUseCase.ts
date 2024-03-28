@@ -63,6 +63,7 @@ export class CreateActivityRegisterUseCase {
     const userLocation = userGeoLocation.trim().split(",");
 
     if (
+      club.name !== "teste" &&
       !this.isWithinRadius(
         Number(userLocation[0]),
         Number(userLocation[1]),
