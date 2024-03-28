@@ -13,12 +13,7 @@ export default class RegisterUseCase {
       ...credentials,
       _id: uuidv4(),
       password: passHash,
-      cpf: credentials.cpf
-        .toString()
-        .trim()
-        .replace(".", " ")
-        .replace("-", " ")
-        .trim(),
+      cpf: credentials.cpf.replace(/\D/g, "").trim(),
     });
 
     if (photo) {
