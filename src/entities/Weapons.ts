@@ -3,12 +3,13 @@ import { Schema, model } from "mongoose";
 const Weapons = new Schema(
   {
     _id: String,
-    name: String,
     ownerId: String,
+    brand: String,
+    model: String,
+    register: String,
+    caliber: String,
     categoryId: String,
-    modelo: String,
-    registro: String,
-    validade: String,
+    GTValidation: String,
   },
   { timestamps: true, _id: false }
 );

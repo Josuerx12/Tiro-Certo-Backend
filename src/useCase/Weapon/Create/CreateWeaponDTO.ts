@@ -1,7 +1,8 @@
 export interface CreateWeaponDTO {
-  name: string;
+  brand: string;
   categoryId: string;
-  modelo: string;
-  registro: string;
-  validade: string;
+  model: string;
+  register: string;
+  caliber: string;
+  gTValidation: string;
 }

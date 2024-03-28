@@ -4,13 +4,12 @@ import { CreateWeaponDTO } from "./CreateWeaponDTO";
 import { v4 } from "uuid";
 
 export class CreateWeaponUseCase {
-  async execute(credentials: CreateWeaponDTO, user: IUser) {
+  async execute(credentials: CreateWeaponDTO) {
     const weapon = await Weapons.create({
       ...credentials,
-      ownerId: user._id,
       _id: v4(),
     });
 
-    return `Armamento número: ${weapon.registro}, cadastrado com sucesso!`;
+    return `Armamento número: ${weapon.register}, cadastrado com sucesso!`;
   }
 }
