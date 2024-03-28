@@ -2,9 +2,9 @@ import User from "../../../entities/User";
 
 export class GetUsersByCpfUseCase {
   async execute(cpf: string) {
-    cpf.replace(/\D/g, "").trim();
+    const newcpf = cpf.replace(/\D/g, "").trim();
     const user = await User.findOne({
-      cpf,
+      cpf: newcpf,
     }).select("-password");
 
     if (!user) {
